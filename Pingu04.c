@@ -11,12 +11,12 @@ Natalia Araujo dos Reis                 RA 112.247
 
 /*IMPLEMENTAÇÃO DA LISTA DE PÁGINAS (CIRCULAR)*/
 struct pagina {
-	float time;
+    float time;
     int R;
     int M;
     long id_pagina;
-	struct pagina *paginaAnterior;
-	struct pagina *proximaPagina;
+    struct pagina *paginaAnterior;
+    struct pagina *proximaPagina;
 };
 typedef struct pagina Pagina;
 
@@ -80,7 +80,7 @@ void imprimirPaginas(listaPaginas *listaPag) {
 /*IMPLEMENTAÇÃO DA LISTA DA MEMÓRIA*/
 struct celulaMemoria {
     long id_pagina;
-    celulaMemoria *proximaMemoria;
+    struct celulaMemoria *proximaMemoria;
 };
 typedef struct celulaMemoria Memoria;
 
@@ -91,15 +91,44 @@ Memoria* criarListaMemoria(void) {
 
 /*INSERÇÃO NA LISTA DA MEMÓRIA*/
 Memoria* inserirMemoria(Memoria* listaMemoria, long idPagina) {
-    
+    Memoria* novaMemoria; // declaração da nova célula de memória
+    Memoria* memoriaAnterior = NULL; // auxiliar para percorrer a lista
+    Memoria* auxLista = listaMemoria; // auxiliar que recebe a lista de memória
+
+    // encontrar posição de inserção da memória
+    while (auxLista != NULL) {
+        memoriaAnterior = auxLista;
+        auxLista = auxLista->proximaMemoria;
+    }
+
+    // alocação e inserção da memória
+    novaMemoria = (Memoria*)malloc(sizeof(Memoria));
+    novaMemoria->id_pagina = idPagina;
+
+    // encadeamento da nova memória
+    if (memoriaAnterior == NULL) { // lista vazia, memória será o início
+        novaMemoria->proximaMemoria = listaMemoria;
+        listaMemoria = novaMemoria;
+    } else { // já existe coisa na lista, entra no final
+        novaMemoria->proximaMemoria = memoriaAnterior->proximaMemoria;
+        memoriaAnterior->proximaMemoria = novaMemoria;
+    }
+
+    return listaMemoria;
 }
 
 /*IMPRESSÃO DA LISTA DA MEMÓRIA*/
+void imprimirMemorias(Memoria* listaMemoria) {
+    Memoria* memoriaAux;
+
+    for(memoriaAux = listaMemoria; memoriaAux != NULL; memoriaAux = memoriaAux->proximaMemoria)
+        printf("Número da Página em Memória = %ld", memoriaAux->id_pagina);
+}
 
 /*IMPLEMENTAÇÃO DA LISTA DO DISCO*/
 struct celulaDisco {
     long id_pagina;
-    celulaDisco *proximoDisco;
+    struct celulaDisco *proximoDisco;
 };
 typedef struct celulaDisco Disco;
 
@@ -109,18 +138,60 @@ Disco* criarListaDisco(void) {
 }
 
 /*INSERÇÃO NA LISTA DO DISCO*/
+Disco* inserirDisco(Disco* listaDisco, long idPagina) {
+    Disco* novoDisco; // declaração da nova célula de disco
+    Disco* discoAnterior = NULL; // auxiliar para percorrer a lista
+    Disco* auxLista = listaDisco; // auxiliar que recebe a lista de disco
+
+    // encontrar posição de inserção de disco
+    while (auxLista != NULL) {
+        discoAnterior = auxLista;
+        auxLista = auxLista->proximoDisco;
+    }
+
+    // alocação e inserção de disco
+    novoDisco = (Disco*)malloc(sizeof(Disco));
+    novoDisco->id_pagina = idPagina;
+
+    // encadeamento do novo disco
+    if (discoAnterior == NULL) { // lista vazia, disco será o início
+        novoDisco->proximoDisco = listaDisco;
+        listaDisco = novoDisco;
+    } else { // já existe coisa na lista, entra no final
+        novoDisco->proximoDisco = discoAnterior->proximoDisco;
+        discoAnterior->proximoDisco = novoDisco;
+    }
+
+    return listaDisco;
+}
+
 /*IMPRESSÃO DA LISTA DO DISCO*/
+void imprimirDisco(Disco* listaDisco) {
+    Disco* discoAux;
+
+    for(discoAux = listaDisco; discoAux != NULL; discoAux = discoAux->proximoDisco)
+        printf("Número da Página em Disco = %ld", discoAux->id_pagina);
+}
 
 /*FUNÇÃO PRINCIPAL*/
 int main(int argc, char const *argv[]) {
     // declaração de variáveis
     listaPaginas listaPag;
+    Memoria* listaMemoria;
+    Disco* listaDisco;
 
     // inicialização das listas
     inicListaPaginas(&listaPag);
+    listaMemoria = criarListaMemoria();
+    listaDisco = criarListaDisco();
 
-    inserirPagina(&listaPag, 1, 0, 0);
-    imprimirPaginas(&listaPag);
+    // inserção das páginas, memórias e discos
+        // inserirPagina(&listaPag, 1, 0, 0, 1234);
+        // imprimirPaginas(&listaPag);
+        // inserirMemoria
+        // imprimirMemorias
+        // inserirDisco
+        // imprimirDisco
 
     return 0;
 }

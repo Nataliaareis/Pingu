@@ -6,6 +6,7 @@ Natalia Araujo dos Reis                 RA 112.247
 
 #include <stdio.h>
 #include <stdlib.h>
+#include<time.h>
 
 #define MAX_PAGINAS 1023
 
@@ -175,6 +176,7 @@ void imprimirDisco(Disco* listaDisco) {
 
 /*FUNÇÃO PRINCIPAL*/
 int main(int argc, char const *argv[]) {
+    printf("OI\n");
     // declaração de variáveis
     listaPaginas listaPag;
     Memoria* listaMemoria;
@@ -184,6 +186,15 @@ int main(int argc, char const *argv[]) {
     inicListaPaginas(&listaPag);
     listaMemoria = criarListaMemoria();
     listaDisco = criarListaDisco();
+
+    if(pagina.R == 1){
+        pagina.R = __TIME__;
+        printf("Pagina estava em uso\n");
+    }
+
+    else if(R == 0){
+        printf("Pagina nao referenciada\n")
+    }
 
     // inserção das páginas, memórias e discos
         // inserirPagina(&listaPag, 1, 0, 0, 1234);
@@ -195,3 +206,4 @@ int main(int argc, char const *argv[]) {
 
     return 0;
 }
+

@@ -53,7 +53,7 @@ int inserirPagina(listaPaginas *listaPag, float tempoRef, int R, int M, long idP
             novaPagina->proximaPagina = novaPagina; // sua próxima página é ela mesma
             novaPagina->paginaAnterior = novaPagina; // sua página anterior é ela mesma
             listaPag->primeiraPagina = novaPagina; // ela é a primeira página
-            listaPag->ultimaPagina - novaPagina;    //ela é a ultima prova
+            listaPag->ultimaPagina = novaPagina;    //ela é a ultima prova
         }
 
         // lista já possui outras páginas
@@ -185,12 +185,11 @@ int main(int argc, char const *argv[]) {
     // declaração de variáveis
     int tempo = 100;
     int idade, contador = 1;
-    int alocou = 0;
     int substituiu = 0;
     listaPaginas listaPag;
     Memoria* listaMemoria;
     Disco* listaDisco;
-    int R1 = listaPag.primeiraPagina->R;
+    int R1 = listaPag->primeiraPagina->R;
     Pagina *novo;
 
     // inicialização das listas
@@ -202,7 +201,7 @@ int main(int argc, char const *argv[]) {
         if(R1 == 1){
             R1 = __TIME__;
             printf("Pagina esta em uso\n");
-            listaPag.primeiraPagina->proximaPagina;
+            listaPag->primeiraPagina->proximaPagina;
             //listaPag->primeiraPagina.proximaPagina;
             continue;
         }
@@ -213,18 +212,18 @@ int main(int argc, char const *argv[]) {
 
             if(idade > tau && listaPag.primeiraPagina->M == 0){   //não está no working set (idade > tau) e uma copia valida existe no disco (M ==0)
                 //Criando uma nova página
-                listaPag.primeiraPagina->M = novo->M;
-                listaPag.primeiraPagina->R = novo->R;
-                listaPag.primeiraPagina->time = novo->time;
-                listaPag.primeiraPagina = listaPag.primeiraPagina->proximaPagina;
+                listaPag->primeiraPagina->M = novo->M;
+                listaPag->primeiraPagina->R = novo->R;
+                listaPag->primeiraPagina->time = novo->time;
+                listaPag->primeiraPagina = listaPag.primeiraPagina->proximaPagina;
             }
 
-            else if(listaPag.primeiraPagina->M == 1){           //tem uma cópia válida no disco! (M == 1)
-                listaPag.primeiraPagina->proximaPagina;
+            else if(listaPag->primeiraPagina->M == 1){           //tem uma cópia válida no disco! (M == 1)
+                listaPag->primeiraPagina->proximaPagina;
             }
         }
 
-        if(listaPag.primeiraPagina == listaPag.primeiraPagina->paginaAnterior){
+        if(listaPag->primeiraPagina == listaPag->primeiraPagina->paginaAnterior){
             Pagina *aux;
             while(aux != NULL){
                 if(aux->M == 0){        //não tem cópia válida
@@ -237,9 +236,9 @@ int main(int argc, char const *argv[]) {
                 aux = aux->proximaPagina;
             }
             if(substituiu == 0){    //se não substituiu, substitui qualquer pagina
-                listaPag.primeiraPagina->M = novo->M;
-                listaPag.primeiraPagina->R = novo->R;
-                listaPag.primeiraPagina->time = novo->time;
+                listaPag->primeiraPagina->M = novo->M;
+                listaPag->primeiraPagina->R = novo->R;
+                listaPag->primeiraPagina->time = novo->time;
             }
         }
         tempo++;

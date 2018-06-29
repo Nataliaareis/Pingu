@@ -53,7 +53,7 @@ int inserirPagina(listaPaginas *listaPag, float tempoRef, int R, int M, long idP
             novaPagina->proximaPagina = novaPagina; // sua próxima página é ela mesma
             novaPagina->paginaAnterior = novaPagina; // sua página anterior é ela mesma
             listaPag->primeiraPagina = novaPagina; // ela é a primeira página
-            listaPag->ultimaPagina - novaPagina;    //ela é a ultima prova
+            listaPag->ultimaPagina = novaPagina;    //ela é a ultima prova
         }
 
         // lista já possui outras páginas
